@@ -4,7 +4,7 @@ import requests
 from bs4 import BeautifulSoup
 
 from flask import Flask, render_template, flash, request
-from wtforms import Form, TextField, TextAreaField, validators, StringField, SubmitField
+from wtforms import Form, validators, StringField
 
 app = Flask(__name__)
 app.config.from_object(__name__)
@@ -13,8 +13,10 @@ app.config['SECRET_KEY'] = '7d441f27d441f27567d441f2b6176a'
 
 class InputToko(Form):
     name = StringField('Name:', validators=[validators.DataRequired(), validators.Regexp(r'^[\w.+-]+$')])
+
     @app.route("/", methods=['GET', 'POST'])
     def index():
+        global name
         title = "Bukalapak Scraper"
         export = []
         form = InputToko(request.form)
@@ -22,10 +24,10 @@ class InputToko(Form):
 
         if request.method == 'POST':
             name = request.form['name']
-            UA = ("Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_4) "
+            ua = ("Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_4) "
                   "AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.149 "
                   "Safari/537.36")
-            head = {'User-Agent': UA}
+            head = {'User-Agent': ua}
 
             # get tokens from homepage
             root = requests.get('https://www.bukalapak.com', headers=head)
@@ -52,7 +54,7 @@ class InputToko(Form):
             data_src = json_src['meta']
             total = data_src['total']
 
-            limit = 16
+            limit = int(16)
             offset = limit - 16
             page = 0
 
@@ -64,30 +66,26 @@ class InputToko(Form):
 
             while pages < page:
                 src = requests.get('https://api.bukalapak.com/stores/{}/products?'
-                                   'offset={}&limit={}&sort=bestselling&access_token={}'.format(id_store, offset, limit,
-                                                                                                token))
+                                   'offset={}&limit={}&sort=bestselling'
+                                   '&access_token={}'.format(id_store, offset, limit, token))
                 json_data = src.json()
                 data = json_data['data']
                 for d in data:
-
-                    export.append({"name": d["name"],
-                                        "harga": d["price"],
-                                        "url": d["url"],
-                                        "gambar": d["images"]["large_urls"][0],
-                                        "terjual": d["stats"]["sold_count"],
-                                        "desk": BeautifulSoup(d["description"], 'html.parser').text
-                                        })
+                    export.append(
+                        dict(name=d["name"], harga=d["price"], url=d["url"], gambar=d["images"]["large_urls"][0],
+                             terjual=d["stats"]["sold_count"],rating=d['rating']['average_rate'],
+                             desk=BeautifulSoup(d["description"], 'html.parser').text))
 
                 pages += 1
                 offset += limit
 
-
         if form.validate():
-            flash('Processing data from ' + name )
+            flash('Processing data from ' + name)
         else:
             flash('Input Nama Toko dalam url bukapak.com/u/<strong>{nama_toko}</strong> | paste hanya nama toko')
 
         return render_template('index.html', title=title, form=form, data=export)
+
 
 if __name__ == '__main__':
     app.run(debug=True)

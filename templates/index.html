@@ -62,7 +62,9 @@
                       <tr>
                         <th>nama</th>
                         <th>url</th>
+                        <th>gambar</th>
                         <th>Terjual</th>
+                        <th>Rate</th>
                         <th>harga</th>
                       </tr>
                     </thead>
@@ -71,7 +73,9 @@
                       <tr>
                         <td>{{ d['name'] }}</td>
                         <td>{{ d['url'] }}</td>
+                        <td>{{ d['gambar'] }}</td>
                         <td>{{ d['terjual'] }}</td>
+                          <td>{{ d['rating'] }}</td>
                         <td>{{ d['harga'] }}</td>
                       </tr>
                     {% endfor %}
