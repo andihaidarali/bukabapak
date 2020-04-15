@@ -15,7 +15,7 @@ get_token = get_smtg.find('meta', attrs={'name': 'oauth-access-token'})
 token = get_token['content']
 
 # get id toko from mobile profile pages
-nama_toko = 'rabbanisophia'
+nama_toko = 'buzper'
 profile = ('https://m.bukalapak.com/u/{}?keywords=&price_range='
            '&sort=bestselling&deal=&condition=&rating=&installment='
            '&free_shipping_provinces=&wholesale=&page=1'.format(nama_toko))
@@ -50,15 +50,26 @@ while pages < page:
     json_data = src.json()
     data = json_data['data']
     for d in data:
-        export.append({"name": d["name"],
-                       "harga": d["price"],
-                       "url": d["url"],
-                       "gambar": d["images"]["large_urls"][0],
-                       "rating": "rating : {} dari {} user".format(d["rating"]["average_rate"], d["rating"][
-                           "user_count"]),
-                       "terjual": d["stats"]["sold_count"],
-                       "desk": BeautifulSoup(d["description"], 'html.parser').text
-                       })
+        if len(["rating"]) != 0:
+            export.append({"name": d["name"],
+                           "harga": d["price"],
+                           "url": d["url"],
+                           "gambar": d["images"]["large_urls"][0],
+                           "rating": "rating : {} dari {} user".format(d["rating"]["average_rate"], d["rating"][
+                               "user_count"]),
+                           "terjual": d["stats"]["sold_count"],
+                           "desk": BeautifulSoup(d["description"], 'html.parser').text
+                           })
+        else:
+            export.append({"name": d["name"],
+                           "harga": d["price"],
+                           "url": d["url"],
+                           "gambar": d["images"]["large_urls"][0],
+                           "rating": "None",
+                           "terjual": d["stats"]["sold_count"],
+                           "desk": BeautifulSoup(d["description"], 'html.parser').text
+                           })
+
     pages += 1
     offset += limit
 

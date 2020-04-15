@@ -3,6 +3,7 @@ from bs4 import BeautifulSoup
 from flask import Flask, render_template, flash, request
 from wtforms import Form, validators, StringField
 import bklpk
+import time
 
 app = Flask(__name__)
 app.config.from_object(__name__)
@@ -26,7 +27,7 @@ class InputToko(Form):
                 name = request.form['name']
                 id_store = bklpk.get_id(name).id
                 if id_store != 0:
-                    total = 16 # total = bklpk.get_id(name).get_total()
+                    total = bklpk.get_id(name).get_total()
                     limit = int(16)
                     offset = limit - 16
                     y = total / limit
@@ -41,13 +42,20 @@ class InputToko(Form):
                         json_data = src.json()
                         data = json_data['data']
                         for d in data:
-                            # TODO : Buat If Else jika Avereage Rate Not Found
-                            export.append(
-                                dict(name=d["name"], harga=d["price"], url=d["url"],
-                                     gambar=d["images"]["large_urls"][0], terjual=d["stats"]["sold_count"],
-                                     rating=d['rating']['average_rate'],
-                                     desk=BeautifulSoup(d["description"], 'html.parser').text)
-                            )
+                            if len(d['rating']) != 0:
+                                export.append(
+                                    dict(name=d["name"], harga=d["price"], url=d["url"],
+                                         gambar=d["images"]["large_urls"][0], terjual=d["stats"]["sold_count"],
+                                         rating=d['rating']['average_rate'],
+                                         desk=BeautifulSoup(d["description"], 'html.parser').text)
+                                )
+                            else:
+                                export.append(
+                                    dict(name=d["name"], harga=d["price"], url=d["url"],
+                                         gambar=d["images"]["large_urls"][0], terjual=d["stats"]["sold_count"],
+                                         rating="None",
+                                         desk=BeautifulSoup(d["description"], 'html.parser').text)
+                                )
                         pages += 1
                         offset += limit
                 else:
@@ -58,6 +66,7 @@ class InputToko(Form):
 
         # TODO : Buat Halaman Lain Untuk Scarping Official Page
         # TODO : Buat Halaman Lain Untuk Scraping Hasil Pencarian
+
 
 if __name__ == '__main__':
     app.run(debug=True)
