@@ -57,11 +57,12 @@
     <div class="container">
         <div class="row">
             <div class="col-lg12">
-                <table class="table table-hover">
+                <table class="table responsive table-hover">
                     <thead>
                       <tr>
                         <th>nama</th>
                         <th>url</th>
+                        <th>Desk</th>
                         <th>gambar</th>
                         <th>Terjual</th>
                         <th>Rate</th>
@@ -73,9 +74,13 @@
                       <tr>
                         <td>{{ d['name'] }}</td>
                         <td>{{ d['url'] }}</td>
-                        <td>{{ d['gambar'] }}</td>
+                        <td>{{ d['deskripsi'] | safe }}</td>
+                        <td>{% for i in d['gambar'] %}
+                            <span>{{i}} ,</span>
+                        {% endfor %}
+                        </td>
                         <td>{{ d['terjual'] }}</td>
-                          <td>{{ d['rating'] }}</td>
+                        <td>{{ d['rating'] }}</td>
                         <td>{{ d['harga'] }}</td>
                       </tr>
                     {% endfor %}

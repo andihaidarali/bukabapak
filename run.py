@@ -3,7 +3,6 @@ from bs4 import BeautifulSoup
 from flask import Flask, render_template, flash, request
 from wtforms import Form, validators, StringField
 import bklpk
-import time
 
 app = Flask(__name__)
 app.config.from_object(__name__)
@@ -44,15 +43,15 @@ class InputToko(Form):
                         for d in data:
                             if len(d['rating']) != 0:
                                 export.append(
-                                    dict(name=d["name"], harga=d["price"], url=d["url"],
-                                         gambar=d["images"]["large_urls"][0], terjual=d["stats"]["sold_count"],
+                                    dict(name=d["name"], harga=d["price"], url=d["url"],deskripsi=d["description"],
+                                         gambar=d["images"]["large_urls"], terjual=d["stats"]["sold_count"],
                                          rating=d['rating']['average_rate'],
                                          desk=BeautifulSoup(d["description"], 'html.parser').text)
                                 )
                             else:
                                 export.append(
-                                    dict(name=d["name"], harga=d["price"], url=d["url"],
-                                         gambar=d["images"]["large_urls"][0], terjual=d["stats"]["sold_count"],
+                                    dict(name=d["name"], harga=d["price"], url=d["url"],deskripsi=d["description"],
+                                         gambar=d["images"]["large_urls"], terjual=d["stats"]["sold_count"],
                                          rating="None",
                                          desk=BeautifulSoup(d["description"], 'html.parser').text)
                                 )
@@ -63,8 +62,6 @@ class InputToko(Form):
         else:
             flash(inputnya)
         return render_template('index.html', title=title, form=form, data=export)
-
-        # TODO : Buat Halaman Lain Untuk Scarping Official Page
         # TODO : Buat Halaman Lain Untuk Scraping Hasil Pencarian
 
 
