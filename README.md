@@ -1,5 +1,6 @@
-# Bukabapak Scraping Unofficial Merchant Product
-Scraping full Data Product from Unoficial Bukalapak Merchant 
-with sepsific urls Https://www.bukalapak.com/u/{merchant_name}
-still need improvement with a clean code and error handling for images and rating.
-but it works now   
+# Bukabapak Scraping Merchant Product
+Scraping full Data Product from Bukalapak Merchant 
+with sepsific urls Https://www.bukalapak.com/u/{merchant_name} or Https://www.bukalapak.com/{merchant_name} for official merchant
+
+Simple Build with : 
+Flask, Requests, and Beautifulsoup4
