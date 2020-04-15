@@ -23,7 +23,7 @@
           <div class="row">
               <div class="col-md-4">
               <h3>{{ title }}</h3>
-              <p>Scraping Katalog Produk unofficial Toko di Bukalapak</p>
+              <p>Scraping FULL Product Catalog in Bukalapak Merchant.</p>
           </div>
               <div class="col-md-8">
                   <div class="form-group">
@@ -66,6 +66,7 @@
                         <th>gambar</th>
                         <th>Terjual</th>
                         <th>Rate</th>
+                          <th>Stok</th>
                         <th>harga</th>
                       </tr>
                     </thead>
@@ -75,11 +76,12 @@
                         <td>{{ d['name'] }}</td>
                         <td>{{ d['url'] }}</td>
                         <td>{{ d['deskripsi'] | safe }}</td>
-                        <td>{% for i in d['gambar'] %}
-                            <span>{{i}} ,</span>
-                        {% endfor %}
+                        <td>{%- for i in d['gambar'] -%}
+                            {{ i + ", " }}
+                        {%- endfor -%}
                         </td>
                         <td>{{ d['terjual'] }}</td>
+                          <td>{{ d['stok'] }}</td>
                         <td>{{ d['rating'] }}</td>
                         <td>{{ d['harga'] }}</td>
                       </tr>

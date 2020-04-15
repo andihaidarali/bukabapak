@@ -45,14 +45,14 @@ class InputToko(Form):
                                 export.append(
                                     dict(name=d["name"], harga=d["price"], url=d["url"],deskripsi=d["description"],
                                          gambar=d["images"]["large_urls"], terjual=d["stats"]["sold_count"],
-                                         rating=d['rating']['average_rate'],
+                                         stok=d["stock"], rating=d['rating']['average_rate'],
                                          desk=BeautifulSoup(d["description"], 'html.parser').text)
                                 )
                             else:
                                 export.append(
                                     dict(name=d["name"], harga=d["price"], url=d["url"],deskripsi=d["description"],
                                          gambar=d["images"]["large_urls"], terjual=d["stats"]["sold_count"],
-                                         rating="None",
+                                         stok=d["stock"], rating="None",
                                          desk=BeautifulSoup(d["description"], 'html.parser').text)
                                 )
                         pages += 1

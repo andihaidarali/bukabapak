@@ -41,15 +41,20 @@ class get_id():
             parsing_profile = BeautifulSoup(get_profile.text, 'html.parser')
             json_data = json.loads(parsing_profile.find_all('merchant-page-app')[0]['seller-data'])
             self.id = json_data['seller']['id']
+
         except:
-            profile = ('https://m.bukalapak.com/{}?keywords=&price_range='
-                       '&sort=bestselling&deal=&condition=&rating=&installment='
-                       '&free_shipping_provinces=&wholesale=&page=1'.format(self.nama_toko))
-            params_prof = {'page': 1, 'sort': 'bestselling'}
-            get_profile = requests.get(url=profile, headers=head, params=params_prof)
-            parsing_profile = BeautifulSoup(get_profile.text, 'html.parser')
-            json_data = json.loads(parsing_profile.find("official-store-app")['id'])
-            self.id = json_data
+            try:
+                profile = ('https://m.bukalapak.com/{}?keywords=&price_range='
+                           '&sort=bestselling&deal=&condition=&rating=&installment='
+                           '&free_shipping_provinces=&wholesale=&page=1'.format(self.nama_toko))
+                params_prof = {'page': 1, 'sort': 'bestselling'}
+                get_profile = requests.get(url=profile, headers=head, params=params_prof)
+                parsing_profile = BeautifulSoup(get_profile.text, 'html.parser')
+                json_data = json.loads(parsing_profile.find("official-store-app")['id'])
+                self.id = json_data
+
+            except TypeError:
+                self.id = 0
 
     def get_total(self):
         id_store = self.id
