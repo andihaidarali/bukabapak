@@ -1,6 +1,6 @@
 # Bukabapak Scraping Merchant Product
-Scraping full Data Product from Bukalapak Merchant 
-with sepsific urls Https://www.bukalapak.com/u/{merchant_name} or Https://www.bukalapak.com/{merchant_name} for official merchant
+Scraping full Data Product from Bukabapak Merchant 
+with sepsific urls Https://www.bukabapak.com/u/{merchant_name} or Https://www.bukabapak.com/{merchant_name} for official merchant
 
 Simple Build with : 
 Flask, Requests, and Beautifulsoup4
