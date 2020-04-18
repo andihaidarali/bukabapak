@@ -1,0 +1,40 @@
+{% extends 'base_template.html' %}
+{% block content %}
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 table-responsive">
+                <table id="res-table" class="table responsive table-hover">
+                    <thead>
+                      <tr>
+                        <th>Name</th>
+                        <th>url</th>
+                        <th>Description</th>
+                        <th>Images</th>
+                        <th>Sold</th>
+                        <th>Stock</th>
+                          <th>Rating</th>
+                        <th>Price</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                    {% for d in data %}
+                      <tr>
+                        <td>{{ d['name'] }}</td>
+                        <td>{{ d['url'] }}</td>
+                        <td>{{ d['desk'] | safe }}</td>
+                        <td>{%- for i in d['gambar'] -%}
+                            {{ i + ", " }}
+                        {%- endfor -%}
+                        </td>
+                        <td>{{ d['terjual'] }}</td>
+                          <td>{{ d['stok'] }}</td>
+                        <td>{{ d['rating'] }}</td>
+                        <td>{{ d['harga'] }}</td>
+                      </tr>
+                    {% endfor %}
+                    </tbody>
+                  </table>
+            </div>
+        </div>
+    </div>
+{% endblock %}
